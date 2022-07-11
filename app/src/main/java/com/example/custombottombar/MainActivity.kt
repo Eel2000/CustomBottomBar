@@ -328,7 +328,7 @@ fun ScreenHome(){
        }
    }
 }
-
+/**-----------------------------------------Preview Scope-------------------------------------------------**/
 @Preview(showBackground = true)
 @Composable
 fun MainAplicationPreview(){
