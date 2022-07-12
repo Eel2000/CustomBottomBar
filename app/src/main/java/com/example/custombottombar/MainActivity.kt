@@ -3,10 +3,13 @@ package com.example.custombottombar
  import android.os.Bundle
  import androidx.activity.ComponentActivity
  import androidx.activity.compose.setContent
+ import androidx.annotation.DrawableRes
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
  import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.lazy.LazyColumn
  import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.foundation.lazy.items
  import androidx.compose.foundation.selection.selectableGroup
  import androidx.compose.foundation.shape.CircleShape
  import androidx.compose.foundation.shape.RoundedCornerShape
@@ -95,11 +98,26 @@ private fun BottomNavBar(modifier: Modifier){
     }
 }
 
-data class MenutItem(val ItemName: String, val Image : ImageVector)
+data class SectionItem(
+    val Title: String,
+    val ContentTitle: String,
+    val ContentSubTitle: String,
+    @DrawableRes val ContentImage: Int
+)
+data class MenutItem(
+    val ItemName: String,
+    val Image: ImageVector
+)
 var MenuItems = listOf(
     MenutItem(ItemName = "Home", Image = Icons.Outlined.Home),
     MenutItem(ItemName = "Favorites", Image = Icons.Outlined.Favorite),
     MenutItem(ItemName = "Profile", Image = Icons.Outlined.Person),
+)
+
+var SectionItems = listOf(
+    SectionItem("Jump Back In","Legs", "30 mins", R.drawable.jumping_high_for_fitness),
+    SectionItem("Body Focus","Squatting", "30 mins", R.drawable.squatting_exercise),
+    SectionItem("Stretching","Body", "5 mins", R.drawable.stretching_at_workout),
 )
 
 @Composable
@@ -191,7 +209,7 @@ fun CustomBottomNavBar(menuItems: List<MenutItem> = MenuItems){
 @Composable
 fun BodyTop(){
     Column(modifier = Modifier
-        .fillMaxHeight(0.6f)
+        .height(490.dp)
         .fillMaxWidth()
         .background(Color.DarkGray)) {
         Box {
@@ -248,16 +266,111 @@ fun BodyTop(){
 @Composable
 fun BodyEnd(){
     Column(modifier = Modifier
-        .fillMaxHeight()
+        .height(400.dp)
         .fillMaxWidth()
-        .background(Color(246, 249, 251))) {
+        .background(Color(224, 249, 251))) {
 
+        Column(verticalArrangement = Arrangement.Center, modifier = Modifier.padding(top = 10.dp)) {
+            LazyColumn(modifier = Modifier.padding(vertical = 10.dp)){
+                items(SectionItems){ item ->
+                    BodySection(
+                        sectionTile = item.Title,
+                        contentTile = item.ContentTitle,
+                        contentSubTile = item.ContentSubTitle,
+                        contentImage = item.ContentImage
+                    )
+                }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun BodySection(
+    sectionTile: String,
+    contentTile: String,
+    contentSubTile: String,
+    @DrawableRes contentImage: Int
+){
+    Column {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .padding(top = 30.dp)
+                .fillMaxWidth(),
+        ){
+            Text(
+                text = sectionTile,
+                style = MaterialTheme.typography.h6,
+                fontWeight = FontWeight(600)
+            )
+            Text(
+                text = "View all",
+                style = MaterialTheme.typography.body1,
+                color = Color(244, 204, 204)
+            )
+        }
+
+        Box(modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .padding(top = 10.dp, start = 20.dp)) {
+            //TODO: put item card in here
+            ItemCard(title = contentTile, subTitle = contentSubTile, backImage = contentImage )
+        }
+    }
+}
+
+@Composable
+fun ItemCard(
+    title: String,
+    subTitle: String,
+    @DrawableRes backImage: Int
+){
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(15.dp),
+        elevation = 5.dp,
+    ) {
+        Box (modifier = Modifier
+            .height(145.dp)
+            .width(100.dp)){
+            Image(
+                painter = painterResource(id = backImage),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+
+            )
+            Box(
+                contentAlignment = Alignment.TopStart,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = 10.dp,
+                        top = 10.dp
+                    )
+            ){
+                Column {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.h6,
+                        color = Color.White,
+                        fontWeight = FontWeight(600)
+                    )
+                    Text(
+                        text = subTitle,
+                        color = Color.White,
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun MiddleCard(){
-
     Column {
         Box(modifier = Modifier.padding(horizontal = 20.dp)) {
             Row(
