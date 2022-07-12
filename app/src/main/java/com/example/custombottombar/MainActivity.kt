@@ -6,6 +6,7 @@ package com.example.custombottombar
  import androidx.annotation.DrawableRes
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
  import androidx.compose.foundation.layout.*
  import androidx.compose.foundation.lazy.LazyColumn
  import androidx.compose.foundation.lazy.LazyRow
@@ -268,7 +269,7 @@ fun BodyEnd(){
     Column(modifier = Modifier
         .height(400.dp)
         .fillMaxWidth()
-        .background(Color(224, 249, 251))) {
+        .background(Color(246, 246, 246))) {
 
         Column(verticalArrangement = Arrangement.Center, modifier = Modifier.padding(top = 10.dp)) {
             LazyColumn(modifier = Modifier.padding(vertical = 10.dp)){
@@ -329,8 +330,12 @@ fun ItemCard(
     @DrawableRes backImage: Int
 ){
     Card(
-        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                //TODO: make some action
+            },
         elevation = 5.dp,
     ) {
         Box (modifier = Modifier
